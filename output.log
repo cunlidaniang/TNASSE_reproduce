@@ -1,0 +1,133 @@
+nohup: ignoring input
+2023-12-01 15:38:34.764852: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:From /home/qinyuzhou/master/TNASSE/searchspace/nasbench/api.py:148: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+Files already downloaded and verified
+Files already downloaded and verified
+Loading api...
+Loading dataset from file... This may take a few minutes...
+Loaded dataset in 29 seconds
+Finished loading.
+Problem type: nasbench101
+Algorithm: se
+Number of evaluations for each run: 1000
+Sequence length: 21
+Base (choices): 3
+Number of searchers: 1
+Number of regions: 3
+Number of possible goods: 1
+Run   0: gbest = 17.072;acc = 93.25;valid = 93.72; run time = 642.71s;training time = 0.00; code = (array([0, 1, 0, 1, 1]), array([0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 0]), array([0, 0, 0, 1, 1]))
+Average over 0 runs: gbest = 17.072;acc = 93.25;valid = 93.72; run time = 642.71s; training time = 0.00s
+Run   1: gbest = 15.497;acc = 91.82;valid = 91.95; run time = 462.75s;training time = 0.00; code = (array([1, 0, 1, 1, 1]), array([0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]), array([1, 2, 0, 1, 1]))
+Average over 1 runs: gbest = 16.285;acc = 92.53;valid = 92.83; run time = 552.73s; training time = 0.00s
+Run   2: gbest = 17.516;acc = 93.01;valid = 94.02; run time = 579.81s;training time = 0.00; code = (array([1, 0, 0, 0, 1]), array([0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0]), array([0, 0, 0, 0, 1]))
+Average over 2 runs: gbest = 16.695;acc = 92.69;valid = 93.23; run time = 561.76s; training time = 0.00s
+Run   3: gbest = 15.028;acc = 90.87;valid = 91.21; run time = 531.49s;training time = 0.00; code = (array([0, 1, 1, 1, 1]), array([0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]), array([0, 1, 0, 1, 1]))
+Average over 3 runs: gbest = 16.278;acc = 92.24;valid = 92.72; run time = 554.19s; training time = 0.00s
+Run   4: gbest = 17.576;acc = 92.31;valid = 92.99; run time = 473.07s;training time = 0.00; code = (array([1, 0, 1, 0, 0]), array([0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]), array([1, 1, 0, 1, 2]))
+Average over 4 runs: gbest = 16.538;acc = 92.25;valid = 92.78; run time = 537.97s; training time = 0.00s
+Run   5: gbest = 15.420;acc = 92.01;valid = 92.53; run time = 453.27s;training time = 0.00; code = (array([0, 1, 0, 1, 1]), array([0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0]), array([0, 1, 2, 0, 0]))
+Average over 5 runs: gbest = 16.352;acc = 92.21;valid = 92.74; run time = 523.85s; training time = 0.00s
+Run   6: gbest = 16.118;acc = 92.55;valid = 93.03; run time = 528.11s;training time = 0.00; code = (array([0, 1, 1, 1, 1]), array([1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]), array([1, 1, 1, 0, 0]))
+Average over 6 runs: gbest = 16.318;acc = 92.26;valid = 92.78; run time = 524.46s; training time = 0.00s
+Run   7: gbest = 17.132;acc = 91.97;valid = 92.56; run time = 605.09s;training time = 0.00; code = (array([1, 1, 0, 1, 0]), array([1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0]), array([0, 0, 0, 1, 0]))
+Average over 7 runs: gbest = 16.420;acc = 92.22;valid = 92.75; run time = 534.54s; training time = 0.00s
+Run   8: gbest = 18.123;acc = 93.10;valid = 93.71; run time = 457.71s;training time = 0.00; code = (array([0, 0, 0, 1, 1]), array([0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0]), array([2, 1, 0, 0, 1]))
+Average over 8 runs: gbest = 16.609;acc = 92.32;valid = 92.86; run time = 526.00s; training time = 0.00s
+Run   9: gbest = 14.692;acc = 90.96;valid = 91.67; run time = 607.33s;training time = 0.00; code = (array([0, 1, 1, 0, 1]), array([0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]), array([0, 0, 1, 0, 0]))
+Average over 9 runs: gbest = 16.417;acc = 92.18;valid = 92.74; run time = 534.13s; training time = 0.00s
+Run  10: gbest = 15.391;acc = 93.62;valid = 94.05; run time = 453.31s;training time = 0.00; code = (array([1, 1, 1, 1, 0]), array([1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]), array([0, 1, 0, 1, 0]))
+Average over 10 runs: gbest = 16.324;acc = 92.31;valid = 92.86; run time = 526.79s; training time = 0.00s
+Run  11: gbest = 16.427;acc = 92.39;valid = 92.55; run time = 518.18s;training time = 0.00; code = (array([1, 1, 1, 1, 0]), array([0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]), array([0, 1, 0, 1, 1]))
+Average over 11 runs: gbest = 16.333;acc = 92.32;valid = 92.83; run time = 526.07s; training time = 0.00s
+Run  12: gbest = 15.329;acc = 89.77;valid = 90.24; run time = 442.28s;training time = 0.00; code = (array([1, 1, 1, 0, 1]), array([0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]), array([1, 0, 1, 0, 1]))
+Average over 12 runs: gbest = 16.255;acc = 92.12;valid = 92.63; run time = 519.62s; training time = 0.00s
+Run  13: gbest = 16.674;acc = 90.08;valid = 90.70; run time = 556.37s;training time = 0.00; code = (array([1, 1, 1, 1, 0]), array([0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]), array([0, 1, 1, 1, 2]))
+Average over 13 runs: gbest = 16.285;acc = 91.98;valid = 92.49; run time = 522.25s; training time = 0.00s
+Run  14: gbest = 18.103;acc = 91.26;valid = 91.84; run time = 517.44s;training time = 0.00; code = (array([1, 0, 1, 1, 1]), array([0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1]), array([0, 0, 0, 1, 1]))
+Average over 14 runs: gbest = 16.406;acc = 91.93;valid = 92.45; run time = 521.93s; training time = 0.00s
+Run  15: gbest = 15.811;acc = 79.01;valid = 79.64; run time = 379.88s;training time = 0.00; code = (array([1, 0, 0, 1, 0]), array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1]), array([0, 0, 1, 0, 1]))
+Average over 15 runs: gbest = 16.369;acc = 91.12;valid = 91.65; run time = 513.05s; training time = 0.00s
+Run  16: gbest = 16.201;acc = 93.76;valid = 94.02; run time = 664.26s;training time = 0.00; code = (array([0, 0, 0, 1, 1]), array([1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]), array([0, 0, 0, 1, 1]))
+Average over 16 runs: gbest = 16.359;acc = 91.28;valid = 91.79; run time = 521.94s; training time = 0.00s
+Run  17: gbest = 17.837;acc = 92.14;valid = 92.77; run time = 578.58s;training time = 0.00; code = (array([1, 1, 1, 1, 1]), array([0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1]), array([0, 1, 1, 0, 1]))
+Average over 17 runs: gbest = 16.441;acc = 91.33;valid = 91.84; run time = 525.09s; training time = 0.00s
+Run  18: gbest = 15.372;acc = 89.31;valid = 90.03; run time = 612.50s;training time = 0.00; code = (array([1, 1, 0, 0, 1]), array([0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]), array([1, 1, 0, 1, 1]))
+Average over 18 runs: gbest = 16.385;acc = 91.22;valid = 91.75; run time = 529.69s; training time = 0.00s
+Run  19: gbest = 16.546;acc = 93.37;valid = 93.78; run time = 632.48s;training time = 0.00; code = (array([0, 0, 0, 1, 1]), array([1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]), array([1, 1, 1, 0, 1]))
+Average over 19 runs: gbest = 16.393;acc = 91.33;valid = 91.85; run time = 534.83s; training time = 0.00s
+Run  20: gbest = 16.055;acc = 90.36;valid = 91.22; run time = 473.61s;training time = 0.00; code = (array([1, 1, 1, 1, 1]), array([1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]), array([1, 1, 0, 0, 1]))
+Average over 20 runs: gbest = 16.377;acc = 91.28;valid = 91.82; run time = 531.92s; training time = 0.00s
+Run  21: gbest = 14.697;acc = 93.20;valid = 93.51; run time = 402.69s;training time = 0.00; code = (array([1, 0, 0, 1, 1]), array([0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0]), array([1, 2, 0, 0, 1]))
+Average over 21 runs: gbest = 16.301;acc = 91.37;valid = 91.90; run time = 526.04s; training time = 0.00s
+Run  22: gbest = 16.374;acc = 90.93;valid = 91.71; run time = 576.26s;training time = 0.00; code = (array([1, 1, 1, 1, 1]), array([0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0]), array([1, 0, 0, 1, 1]))
+Average over 22 runs: gbest = 16.304;acc = 91.35;valid = 91.89; run time = 528.23s; training time = 0.00s
+Run  23: gbest = 16.205;acc = 89.51;valid = 90.12; run time = 553.43s;training time = 0.00; code = (array([1, 0, 1, 1, 0]), array([0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1]), array([0, 1, 1, 1, 0]))
+Average over 23 runs: gbest = 16.300;acc = 91.27;valid = 91.81; run time = 529.28s; training time = 0.00s
+Run  24: gbest = 15.989;acc = 85.89;valid = 86.60; run time = 444.16s;training time = 0.00; code = (array([1, 1, 1, 1, 1]), array([0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0]), array([1, 0, 1, 0, 1]))
+Average over 24 runs: gbest = 16.287;acc = 91.06;valid = 91.61; run time = 525.87s; training time = 0.00s
+Run  25: gbest = 15.962;acc = 93.41;valid = 93.82; run time = 552.67s;training time = 0.00; code = (array([1, 1, 1, 0, 0]), array([0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]), array([1, 0, 1, 1, 2]))
+Average over 25 runs: gbest = 16.275;acc = 91.15;valid = 91.69; run time = 526.90s; training time = 0.00s
+Run  26: gbest = 17.549;acc = 92.58;valid = 93.17; run time = 512.63s;training time = 0.00; code = (array([1, 1, 1, 1, 1]), array([0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1]), array([0, 1, 1, 1, 0]))
+Average over 26 runs: gbest = 16.322;acc = 91.20;valid = 91.75; run time = 526.37s; training time = 0.00s
+Run  27: gbest = 16.515;acc = 92.00;valid = 92.27; run time = 505.62s;training time = 0.00; code = (array([0, 1, 0, 1, 1]), array([0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1]), array([1, 1, 2, 1, 1]))
+Average over 27 runs: gbest = 16.329;acc = 91.23;valid = 91.76; run time = 525.63s; training time = 0.00s
+Run  28: gbest = 16.239;acc = 92.00;valid = 92.27; run time = 545.23s;training time = 0.00; code = (array([0, 1, 0, 1, 1]), array([0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]), array([0, 1, 0, 1, 1]))
+Average over 28 runs: gbest = 16.326;acc = 91.26;valid = 91.78; run time = 526.31s; training time = 0.00s
+Run  29: gbest = 15.680;acc = 93.34;valid = 93.43; run time = 524.24s;training time = 0.00; code = (array([0, 1, 1, 0, 1]), array([1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0]), array([1, 0, 0, 1, 1]))
+Average over 29 runs: gbest = 16.304;acc = 91.32;valid = 91.84; run time = 526.24s; training time = 0.00s
+Run  30: gbest = 16.259;acc = 90.30;valid = 91.32; run time = 583.49s;training time = 0.00; code = (array([1, 0, 0, 1, 1]), array([0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0]), array([0, 0, 2, 1, 1]))
+Average over 30 runs: gbest = 16.303;acc = 91.29;valid = 91.82; run time = 528.09s; training time = 0.00s
+Run  31: gbest = 18.148;acc = 92.76;valid = 93.26; run time = 531.52s;training time = 0.00; code = (array([1, 1, 0, 0, 1]), array([0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1]), array([0, 0, 0, 1, 1]))
+Average over 31 runs: gbest = 16.361;acc = 91.34;valid = 91.86; run time = 528.19s; training time = 0.00s
+Run  32: gbest = 16.233;acc = 92.23;valid = 92.37; run time = 564.48s;training time = 0.00; code = (array([0, 1, 1, 1, 1]), array([0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]), array([2, 1, 1, 1, 1]))
+Average over 32 runs: gbest = 16.357;acc = 91.36;valid = 91.88; run time = 529.29s; training time = 0.00s
+Run  33: gbest = 17.612;acc = 93.04;valid = 93.49; run time = 524.74s;training time = 0.00; code = (array([1, 0, 1, 1, 1]), array([0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]), array([0, 2, 0, 1, 1]))
+Average over 33 runs: gbest = 16.394;acc = 91.41;valid = 91.93; run time = 529.16s; training time = 0.00s
+Run  34: gbest = 15.689;acc = 93.01;valid = 93.14; run time = 462.74s;training time = 0.00; code = (array([0, 1, 0, 0, 1]), array([0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]), array([1, 0, 0, 1, 1]))
+Average over 34 runs: gbest = 16.373;acc = 91.46;valid = 91.96; run time = 527.26s; training time = 0.00s
+Run  35: gbest = 14.988;acc = 93.27;valid = 93.52; run time = 503.82s;training time = 0.00; code = (array([1, 1, 1, 0, 0]), array([0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0]), array([1, 1, 1, 2, 0]))
+Average over 35 runs: gbest = 16.335;acc = 91.51;valid = 92.01; run time = 526.61s; training time = 0.00s
+Run  36: gbest = 15.583;acc = 88.24;valid = 88.90; run time = 432.36s;training time = 0.00; code = (array([1, 1, 1, 1, 1]), array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0]), array([1, 1, 0, 1, 1]))
+Average over 36 runs: gbest = 16.315;acc = 91.42;valid = 91.92; run time = 524.06s; training time = 0.00s
+Run  37: gbest = 15.383;acc = 91.27;valid = 91.62; run time = 499.53s;training time = 0.00; code = (array([1, 1, 1, 0, 1]), array([1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1]), array([0, 1, 0, 2, 1]))
+Average over 37 runs: gbest = 16.290;acc = 91.42;valid = 91.91; run time = 523.42s; training time = 0.00s
+Run  38: gbest = 19.910;acc = 93.30;valid = 94.16; run time = 572.78s;training time = 0.00; code = (array([1, 1, 1, 0, 1]), array([1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0]), array([1, 1, 0, 1, 0]))
+Average over 38 runs: gbest = 16.383;acc = 91.47;valid = 91.97; run time = 524.68s; training time = 0.00s
+Run  39: gbest = 17.460;acc = 91.40;valid = 91.70; run time = 630.88s;training time = 0.00; code = (array([1, 1, 1, 1, 1]), array([0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1]), array([1, 1, 1, 0, 0]))
+Average over 39 runs: gbest = 16.410;acc = 91.46;valid = 91.96; run time = 527.34s; training time = 0.00s
+Run  40: gbest = 16.590;acc = 93.01;valid = 93.34; run time = 498.00s;training time = 0.00; code = (array([1, 1, 0, 1, 1]), array([0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0]), array([1, 0, 1, 0, 1]))
+Average over 40 runs: gbest = 16.414;acc = 91.50;valid = 92.00; run time = 526.62s; training time = 0.00s
+Run  41: gbest = 16.032;acc = 92.84;valid = 93.09; run time = 494.98s;training time = 0.00; code = (array([1, 1, 0, 1, 1]), array([0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1]), array([1, 0, 0, 1, 1]))
+Average over 41 runs: gbest = 16.405;acc = 91.53;valid = 92.02; run time = 525.87s; training time = 0.00s
+Run  42: gbest = 15.562;acc = 92.47;valid = 92.87; run time = 558.08s;training time = 0.00; code = (array([1, 1, 0, 1, 1]), array([0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0]), array([1, 0, 1, 1, 0]))
+Average over 42 runs: gbest = 16.386;acc = 91.56;valid = 92.04; run time = 526.62s; training time = 0.00s
+Run  43: gbest = 16.117;acc = 92.58;valid = 92.94; run time = 571.09s;training time = 0.00; code = (array([1, 0, 1, 0, 1]), array([0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]), array([1, 1, 1, 0, 1]))
+Average over 43 runs: gbest = 16.379;acc = 91.58;valid = 92.06; run time = 527.63s; training time = 0.00s
+Run  44: gbest = 16.336;acc = 92.79;valid = 92.84; run time = 499.24s;training time = 0.00; code = (array([1, 0, 0, 1, 1]), array([0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0]), array([1, 0, 0, 1, 1]))
+Average over 44 runs: gbest = 16.379;acc = 91.61;valid = 92.08; run time = 527.00s; training time = 0.00s
+Run  45: gbest = 15.864;acc = 93.25;valid = 93.62; run time = 596.26s;training time = 0.00; code = (array([1, 1, 1, 1, 0]), array([0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]), array([0, 0, 1, 1, 0]))
+Average over 45 runs: gbest = 16.367;acc = 91.64;valid = 92.11; run time = 528.50s; training time = 0.00s
+Run  46: gbest = 15.129;acc = 90.61;valid = 91.48; run time = 476.05s;training time = 0.00; code = (array([1, 1, 1, 1, 0]), array([0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0]), array([0, 1, 1, 1, 0]))
+Average over 46 runs: gbest = 16.341;acc = 91.62;valid = 92.10; run time = 527.39s; training time = 0.00s
+Run  47: gbest = 16.151;acc = 92.41;valid = 93.01; run time = 552.36s;training time = 0.00; code = (array([0, 1, 1, 1, 1]), array([1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1]), array([0, 1, 0, 1, 1]))
+Average over 47 runs: gbest = 16.337;acc = 91.64;valid = 92.12; run time = 527.91s; training time = 0.00s
+Run  48: gbest = 18.979;acc = 90.61;valid = 90.81; run time = 560.07s;training time = 0.00; code = (array([1, 1, 1, 1, 1]), array([1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0]), array([0, 0, 0, 1, 1]))
+Average over 48 runs: gbest = 16.391;acc = 91.61;valid = 92.09; run time = 528.56s; training time = 0.00s
+Run  49: gbest = 23.473;acc = 93.16;valid = 93.53; run time = 612.19s;training time = 0.00; code = (array([1, 0, 0, 1, 1]), array([0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]), array([0, 0, 0, 0, 1]))/home/qinyuzhou/miniconda3/envs/tnasse/lib/python3.7/site-packages/torch/cuda/__init__.py:125: UserWarning: 
+GeForce RTX 2080 Ti with CUDA capability sm_75 is not compatible with the current PyTorch installation.
+The current PyTorch install supports CUDA capabilities sm_37 sm_50 sm_60 sm_61 sm_70 compute_37.
+If you want to use the GeForce RTX 2080 Ti GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+  warnings.warn(incompatible_device_warn.format(device_name, capability, " ".join(arch_list), device_name))
+
+Average over 49 runs: gbest = 16.533;acc = 91.65;valid = 92.12; run time = 530.24s; training time = 0.00s
+Average gbest over 50 runs: 16.532576490887852
+Average run time over 50 runs: 530.24s
+Maximum gbest over 50 runs: 23.47294004017632
+Minimum gbest over 50 runs: 14.691675375106657
+Average acc over 50 runs: 91.65
+Average valid over 50 runs: 92.12

@@ -1,13 +1,4 @@
-'''
-Main structure of TNASS tested on NAS101.
-
-Initialization()
-ResourceArrangement()
-VisionSearch(s, m)
-MarketingResearch(s, m)
-
-'''
-
+## I denoted ?? with confusing parts
 import math
 import numpy as np 
 import random
@@ -24,9 +15,27 @@ from treelib import Tree, Node
 import counter
 
 from scipy.stats import truncnorm
+scale = 3.
+rang = 1
 
 class se():
-    
+    """
+    NASBench101 version
+    Search Economics (SE) --basic version
+    Python implementation
+    Note: In this version, n=h is assumed.
+
+    $$$$$$$$$$$$$$$ Parameters $$$$$$$$$$$$$$$$$$$$
+        iters --> number of iterations for each run
+        n --> number of searchers
+        h --> number of regions
+        w --> the number of possible goods 
+              (the number of samples of each region)
+        sl --> sequence length
+        ff --> fitness function
+        atom --> base
+    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    """
     def __init__(self,iters,n,h,w,sl,atom,max_nodes,ff,dictionary,max_evaluations,good_init_code=None):
         self.iters = iters
         self.n = n
@@ -40,14 +49,12 @@ class se():
         self.max_nodes = max_nodes
         self.max_evaluations = max_evaluations
         counter.eval_init()
-        
+
     def Search(self):
         self.region = {}
         gbest = -1e8
-        gbest_code = {}
-        self.ta = np.ones(self.h)
-        self.tb = np.ones(self.h)
-        s_backbone,s_m,s_v = np.zeros((self.n,self.max_nodes),dtype=int),np.zeros((self.n,self.sl),dtype=int),np.zeros((self.n,self.max_nodes),dtype=int)
+        gbest_code = -np.ones(self.sl)
+        s_backbone,s_m,s_v = self.Initialization()
         s_backbone,s_m,s_v,m_backbone,m_m,m_v = self.ResourceArrangement(s_backbone,s_m,s_v,self.region)
         progress = tqdm(total=self.max_evaluations)
         i=1
@@ -68,20 +75,24 @@ class se():
             i+=1
         return gbest_code, gbest
 
-    def mvmax(self, backbone, m, v, f):
-        max_vaule = -1e10
+    def Initialization(self):
+        self.ta = np.ones(self.h)
+        self.tb = np.ones(self.h)
+        return np.zeros((self.n,self.max_nodes),dtype=int),np.zeros((self.n,self.sl),dtype=int),np.zeros((self.n,self.max_nodes),dtype=int)
+
+    def mvmax(self,backbone,m,v,f):
+        max_value = -1e10
         if len(backbone) != len(m) != len(v):
-            raise("error, numbers of s1 , s2, s3 are not equal")
+            raise("The length of backbone doesn't equal to the length of m and v.")
         for i in range(len(m)):
-            temp_value = f((backbone[i], m[i], v[i]))
-            if temp_value > max_vaule:
-                max_vaule = temp_value
+            temp_value = f((backbone[i],m[i],v[i]))
+            if temp_value>max_value:
+                max_value = temp_value
                 max_backbone = backbone[i]
                 max_m = m[i]
                 max_v = v[i]
-        return max_backbone, max_m, max_v
+        return max_backbone,max_m,max_v
 
-    ##不会写就直接抄了
     def ResourceArrangement(self,s_backbone,s_m,s_v,region):
         self.nfix = math.ceil(round(math.log(self.h,self.atom),6))
         #check edge case (h==1)
@@ -153,7 +164,8 @@ class se():
             s_m[i] = m_m[i%self.h,random.randint(0,self.w-1)]
             s_v[i] = m_v[i%self.h,random.randint(0,self.w-1)]
         return s_backbone,s_m,s_v,m_backbone,m_m,m_v
-    
+        
+
     def VisionSearch(self,s,m):
         self.v = self.Transition(s,m)
         e = self.ExpectedValue(self.v,m,self.ta,self.tb)
@@ -163,46 +175,45 @@ class se():
     def MarketingResearch(self,s,m):
         m = self.Update(s,m)
         self.Accumulation1(s,m)
-        self.Accumulation2(s,m)
+        self.Accumulation1(s,m)##??
         return m
-    
-    def Transition(self, s, m):
-        s_backbone,s_m,s_v = s[0],s[1],s[2] 
-        m_backbone,m_m,m_v = m[0], m[1], m[2]
+
+    def Transition(self,s,m):
+        s_backbone,s_m,s_v = copy.deepcopy(s[0]),copy.deepcopy(s[1]),s[2] 
+        m_backbone,m_m,m_v = copy.deepcopy(m[0]),copy.deepcopy(m[1]),m[2]
         v_backbone = np.zeros((self.n,self.h,self.w,self.max_nodes),dtype=int)
         v_m = np.zeros((self.n,self.h,self.w,self.sl),dtype=int)
         v_v = np.zeros((self.n,self.h,self.w,self.max_nodes),dtype=int)
         for i in range(self.n):
             for j in range(self.h):
                 for k in range(self.w):
-                    #backbone
-                    cp = random.randint(1, self.max_nodes - 2)
+                    cp = random.randint(1,self.max_nodes-2)
                     c1_backbone = np.concatenate((s_backbone[i][:cp], m_backbone[j][k][cp:]))
                     c2_backbone = np.concatenate((m_backbone[j][k][:cp],s_backbone[i][cp:]))
-                    mp = random.randint(0,self.max_nodes-1)
+                    mp = random.randint(0,self.max_nodes-1) 
                     c1_backbone[mp] = 1 ^ c1_backbone[mp]
                     c2_backbone[mp] = 1 ^ c2_backbone[mp]
-                    
-                    c1_nones = np.count_nonzero(c1_backbone == 1)
-                    c2_nones = np.count_nonzero(c2_backbone == 1)
+
+                    c1_nones = np.count_nonzero(c1_backbone[i] == 1) ##??
+                    c2_nones = np.count_nonzero(c2_backbone[i] == 1)
                     if c1_nones==0:
-                        del_zero_index = random.choice(range(self.max_nodes))
+                        del_zero_index = random.choice(range(5)) ##??
                         c1_backbone[del_zero_index] = 1
                     if c2_nones==0:
-                        del_zero_index = random.choice(range(self.max_nodes))
+                        del_zero_index = random.choice(range(5))
                         c2_backbone[del_zero_index] = 1
-                    
-                    cp = random.randomint(1, self.sl - 2)
-                    c1_m = np.concatenate((s_m[i][:cp], m_m[j][k][cp:]))
-                    c2_m = np.concatenate((m_m[j][k][:cp],s_m[i][cp:]))                                   
 
+                    cp = random.randint(1,self.sl-2)
+                    c1_m = np.concatenate((s_m[i][:cp], m_m[j][k][cp:]))
+                    c2_m = np.concatenate((m_m[j][k][:cp],s_m[i][cp:]))
+
+                    #one-point mutation
                     mp = random.randint(0,self.sl-1) 
                     c1_m[mp] = 1 ^ c1_m[mp]
                     c2_m[mp] = 1 ^ c2_m[mp]
-                    
-                    ## recover the connectivity
-                    
-                    matrix = np.zeros([self.max_nodes + 2, self.max_nodes + 2])
+
+                    #check same edges
+                    matrix = np.zeros([7,7])
                     previous = -1
                     for x,v in enumerate(c1_backbone):
                         if v==0:
@@ -214,10 +225,9 @@ class se():
                         previous = x
                     matrix[previous+1][-1] = 1
                     map_backbone = matrix[np.triu_indices_from(matrix,k=1)]
-                    combined_m_1 = map_backbone + c1_m
-                    c1_map = map_backbone
-                    
-                    matrix = np.zeros([self.max_nodes + 2, self.max_nodes + 2])
+                    combined_m_1 = 2*map_backbone + c1_m
+
+                    matrix = np.zeros([7,7])
                     previous = -1
                     for x,v in enumerate(c2_backbone):
                         if v==0:
@@ -229,29 +239,21 @@ class se():
                         previous = x
                     matrix[previous+1][-1] = 1
                     map_backbone = matrix[np.triu_indices_from(matrix,k=1)]
-                    combined_m_2 = map_backbone + c2_m
-                    c2_map = map_backbone
-                    
+                    combined_m_2 = 2*map_backbone + c2_m
+
                     #check whether the edges of c1 and c2 exceeds the upper bound 9. If so, randomly delete some edges.
                     c1_zeros = np.count_nonzero(combined_m_1 == 0)
                     c2_zeros = np.count_nonzero(combined_m_2 == 0)
                     if c1_zeros<12:
-                        del_ones_index_1 = random.sample(list(*np.where(c1_map!=1 and c1_m == 1)),k=12-c1_zeros)
+                        del_ones_index_1 = random.sample(list(*np.where(combined_m_1==1)),k=12-c1_zeros) ##??
                         for x in del_ones_index_1:
                             c1_m[x] = 0
-                    
                     if c2_zeros<12:
-                        del_ones_index_2 = random.sample(list(*np.where(c2_map!=1 and c2_m == 1)),k=12-c2_zeros)
+                        del_ones_index_2 = random.sample(list(*np.where(combined_m_2==1)),k=12-c2_zeros)
                         for x in del_ones_index_2:
                             c2_m[x] = 0
-                            
-                    for i in range(len(c1_m)):
-                        if(c1_map[i] != 0):
-                            c1_m[i] = 1
-                        
-                        if(c2_map[i] != 0):
-                            c2_m[i] = 1
-                    
+
+                    #random one-point crossover (s_v,m_v)
                     cp = random.randint(self.nfix,self.max_nodes-2)
                     c1_v = np.concatenate((s_v[i][:self.nfix],s_v[i][self.nfix:cp], m_v[j][k][cp:]))
                     c2_v = np.concatenate((s_v[i][:self.nfix],m_v[j][k][self.nfix:cp],s_v[i][cp:]))
@@ -259,7 +261,7 @@ class se():
                     mp = random.randint(self.nfix,self.max_nodes-1) 
                     c1_v[mp] = random.choice(list(set([i for i in range(self.atom)])-set([c1_v[mp]])))
                     c2_v[mp] = random.choice(list(set([i for i in range(self.atom)])-set([c2_v[mp]])))
-                    
+
                     if self.ff((c1_backbone,c1_m,c1_v))>self.ff((c2_backbone,c2_m,c2_v)):
                         v_backbone[i][j][k] = c1_backbone
                         v_m[i][j][k] = c1_m
@@ -268,8 +270,8 @@ class se():
                         v_backbone[i][j][k] = c2_backbone
                         v_m[i][j][k] = c2_m
                         v_v[i][j][k] = c2_v
-        return v_backbone,v_m,v_v
-    
+        return v_backbone,v_m,v_v           
+
     def ExpectedValue(self,v,m,ta,tb):
         e = np.zeros((self.n,self.h))
         for i in range(self.n):
@@ -280,7 +282,7 @@ class se():
                 Mj = self.ff((self.rb_backbone[j],self.rb_m[j],self.rb_v[j])) / sum([self.ff((m[0][j,k],m[1][j,k],m[2][j,k])) for k in range(self.w)])
                 e[i][j] = Tj * Vij * Mj
         return e
-    
+
     def Determination(self,v,e):
         if self.w<=2:
             k = self.w
@@ -320,24 +322,20 @@ class se():
             fm = [self.ff((m_backbone[sreg][x],m_m[sreg][x],m_v[sreg][x])) for x in range(len(m_v[sreg]))]
             marg = np.argmin(fm)
             mmin = np.min(fm)
-            scorenew = self.ff((s_backbone[i],s_m[i],s_v[i]))
-            if scorenew > mmin:
+            if self.ff((s_backbone[i],s_m[i],s_v[i])) > mmin:
                 m_backbone[sreg][marg] = s_backbone[i]
                 m_m[sreg][marg] = s_m[i]
                 m_v[sreg][marg] = s_v[i]
-            if scorenew > self.ff((self.rb_backbone, self.rb_m, self.rb_v)):
-                self.rb_backbone, self.rb_m, self.rb_v = s_backbone[i],s_m[i],s_v[i]
-            
+        ## ?? rb?
         return m_backbone,m_m,m_v
-    
-    ##不会写抄的
+
     def get_key(self,s):
         for k,v in self.region.items():
             if type(v[-1])==int and s[self.nfix-1]==v[-1]:
                 return k
             if type(v[-1])!=int and list(s[:self.nfix-1])==v[:-1] and s[self.nfix-1] in v[-1]:
                 return k
-    ##不会写抄的
+
     def get_value(self,index):
         if not isinstance(self.region[index][-1],list):
             y = [self.region[index][-1]]
