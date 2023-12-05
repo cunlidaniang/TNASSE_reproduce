@@ -6,7 +6,6 @@ def get_score(code):
     loader=get_cifar_10_loader()
     data_iterator=iter(loader)
     input, label=next(data_iterator)
-    print('here')
     score=NetToScore(network,input)
     return score
 

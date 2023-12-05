@@ -7,7 +7,7 @@ import torch.nn as nn
 class ConvBnRelu(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=1, stride=1, padding=0):
         super(ConvBnRelu, self).__init__()
-
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.conv=nn.Conv2d(in_channels=int(in_channels), 
                             out_channels=int(out_channels),
                             kernel_size=kernel_size,
@@ -16,6 +16,7 @@ class ConvBnRelu(nn.Module):
                             bias=False)
         self.batch_norm=nn.BatchNorm2d(num_features=int(out_channels))
         self.relu=nn.ReLU()
+        self.to(self.device)
 
     def forward(self, x):
         x=self.conv(x)
@@ -26,8 +27,9 @@ class ConvBnRelu(nn.Module):
 class Conv3x3BnRelu(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(Conv3x3BnRelu, self).__init__()
-
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.conv3x3 = ConvBnRelu(in_channels, out_channels, 3, 1, 1)
+        self.to(self.device)
 
     def forward(self, x):
         x = self.conv3x3(x)
@@ -36,8 +38,9 @@ class Conv3x3BnRelu(nn.Module):
 class Conv1x1BnRelu(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(Conv1x1BnRelu, self).__init__()
-
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.conv1x1 = ConvBnRelu(in_channels, out_channels, 1, 1, 0)
+        self.to(self.device)
 
     def forward(self, x):
         x = self.conv1x1(x)
@@ -46,8 +49,9 @@ class Conv1x1BnRelu(nn.Module):
 class MaxPool3x3(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=3, stride=1, padding=1):
         super(MaxPool3x3, self).__init__()
-
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.maxpool = nn.MaxPool2d(kernel_size, stride, padding)
+        self.to(self.device)
 
     def forward(self, x):
         x = self.maxpool(x)
@@ -61,10 +65,12 @@ OP_MAP = {
 
 # 通过Cell构建Network
 class Network(nn.Module):
-    def __init__(self, spec, out_channels=16, stacknum=3, modules_per_stack=3, label_num=1, searchspace=[]):
+    def __init__(self, spec, device, out_channels=16, stacknum=3, modules_per_stack=3, label_num=1, searchspace=[]):
         super(Network, self).__init__()
 
         self.layers = nn.ModuleList([])
+        self.device=device
+        self.to(self.device)
 
         in_channels = 3
 
@@ -91,12 +97,14 @@ class Network(nn.Module):
 
     def forward(self, x, get_ints=True):
         ints = []
-        x=x.to(self.device)
         for _, layer in enumerate(self.layers):
+            x=x.to(self.device)
             x = layer(x)
             ints.append(x)
+        x=x.to(self.device)
         out = torch.mean(x, (2, 3))
         ints.append(out)
+        out=out.to(self.device)
         out = self.classifier(out)
         if get_ints:
             return out, ints[-1]
@@ -131,9 +139,8 @@ class Network(nn.Module):
 
 # 根据spec构造Cell
 class Cell(nn.Module):
-    def __init__(self, spec, in_channels, out_channels, device):
+    def __init__(self, spec, in_channels, out_channels):
         super(Cell, self).__init__()
-        self.device=device
 
         self.spec = spec
         self.num_vertices = np.shape(self.spec.matrix)[0]

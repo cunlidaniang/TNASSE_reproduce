@@ -43,7 +43,8 @@ def CodeToSpec(code):
     return spec
 
 def SpecToNet(spec):
-    return Network(spec)
+    device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    return Network(spec, device)
 
 def cal_score(ori, noi, rn, n_conv, channel):
     errs=[]
@@ -61,16 +62,19 @@ def cal_score(ori, noi, rn, n_conv, channel):
         Psi = 0
     return Psi
 
+K = []
+rn = 0
+n_conv=0
+channel = 0
+
 def NetToScore(network, x):
+    global K,rn,n_conv,channel
     network1 = copy.deepcopy(network)
     network2 = copy.deepcopy(network)
     network1 = network1.cuda()
     network2 = network2.cuda()
-    K = []
-    rn = 0
-    n_conv=0
-    channel = 0
     def counting_forward_hook(module, inp, out):
+        global K,rn,channel
         if not module.visited_backwards:
             return
         if isinstance(inp, tuple):
@@ -84,6 +88,7 @@ def NetToScore(network, x):
         module.visited_backwards = True
 
     def counting_forward_hook_conv(module, inp, out):
+        global K,n_conv,channel
         if not module.visited_backwards_conv:
             return
         if isinstance(inp, tuple):
@@ -99,17 +104,20 @@ def NetToScore(network, x):
         if 'Pool' in str(type(module)):
             module.register_forward_hook(counting_forward_hook)
             module.register_backward_hook(counting_backward_hook)
+            module.visited_backwards = False
         if 'Conv' in str(type(module)):
             module.register_forward_hook(counting_forward_hook_conv)
             module.register_backward_hook(counting_backward_hook_conv)
+            module.visited_backwards_conv = False
     for name, module in network2.named_modules():
         if 'Pool' in str(type(module)):
             module.register_forward_hook(counting_forward_hook)
             module.register_backward_hook(counting_backward_hook)
+            module.visited_backwards = False
         if 'Conv' in str(type(module)):
             module.register_forward_hook(counting_forward_hook_conv)
             module.register_backward_hook(counting_backward_hook_conv)
-    print('here')
+            module.visited_backwards_conv=False
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     x_origin = torch.clone(x)
     x_origin = x_origin.to(device)
@@ -117,16 +125,21 @@ def NetToScore(network, x):
     x_noise = x_noise.to(device)
     noise = (x.new(x.size()).normal_(0,0.05)).to(device)
     x_noise = x_noise + noise
-    y = network(x_origin, get_ints=False)
+    network1.zero_grad()
+    x_origin.requires_grad_(True)
+    y = network1(x_origin, get_ints=False)
     y.backward(torch.ones_like(y))
-    y = network(x_origin, get_ints=False)
+    y = network1(x_origin, get_ints=False)
     KK=copy.deepcopy(K)
     K = []
     rn = 0
     n_conv=0
     channel = 0
-    y = network(x_noise, get_ints=False)
+    network2.zero_grad()
+    x_noise.requires_grad_(True)
+    y = network2(x_noise, get_ints=False)
     y.backward(torch.ones_like(y))
-    y = network(x_noise, get_ints=False)
-    return cal_score(KK,K,rn,n_conv,channel)
+    y = network2(x_noise, get_ints=False)
+    KKK=copy.deepcopy(K)
+    return cal_score(KK,KKK,rn,n_conv,channel)
             
