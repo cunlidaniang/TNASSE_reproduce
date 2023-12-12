@@ -94,6 +94,13 @@ import os
 import random
 import time
 
+import sys
+import os
+absolutepath=os.path.abspath(__file__)
+absolutepath=os.path.dirname(absolutepath)
+absolutepath=os.path.dirname(absolutepath)
+sys.path.append(absolutepath)
+
 from nasbench.lib import config
 from nasbench.lib import evaluate
 from nasbench.lib import model_metrics_pb2

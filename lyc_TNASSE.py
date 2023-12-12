@@ -14,9 +14,6 @@ import random
 import time
 from tqdm import trange
 from tqdm import tqdm
-from .tools import *
-DecToN = tools.tools.DecToN
-NToDec = tools.tools.NToDec
 import copy
 from searchspace import nas_101_encoding
 encoding = nas_101_encoding.BACKBONE()
@@ -49,9 +46,9 @@ class se():
         self.tb = np.ones(self.h)
         s_backbone,s_m,s_v = np.zeros((self.n,self.max_nodes),dtype=int),np.zeros((self.n,self.sl),dtype=int),np.zeros((self.n,self.max_nodes),dtype=int)
         s_backbone,s_m,s_v,m_backbone,m_m,m_v = self.ResourceArrangement(s_backbone,s_m,s_v,self.region)
-        progress = tqdm(total=self.max_evaluations)
-        i=1
-        prev_eval = 0
+        # progress = tqdm(total=self.max_evaluations)
+        # i=1
+        # prev_eval = 0
         while counter.EVALS<self.max_evaluations:
             if counter.EVALS>self.max_evaluations:
                 break
@@ -62,10 +59,10 @@ class se():
                 gbest_code = cbest_code
                 gbest = cbest
             m = self.MarketingResearch((s[0],s[1],s[2]),(m_backbone,m_m,m_v))
-            progress.update(counter.EVALS-prev_eval)
-            progress.set_description("Eval={};Iter={};gbest:{:.2f}".format(counter.EVALS,i,gbest))
-            prev_eval = counter.EVALS
-            i+=1
+            # progress.update(counter.EVALS-prev_eval)
+            # progress.set_description("Eval={};Iter={};gbest:{:.2f}".format(counter.EVALS,i,gbest))
+            # prev_eval = counter.EVALS
+            # i+=1
         return gbest_code, gbest
 
     def mvmax(self, backbone, m, v, f):
@@ -192,7 +189,7 @@ class se():
                         del_zero_index = random.choice(range(self.max_nodes))
                         c2_backbone[del_zero_index] = 1
                     
-                    cp = random.randomint(1, self.sl - 2)
+                    cp = random.randint(1, self.sl - 2)
                     c1_m = np.concatenate((s_m[i][:cp], m_m[j][k][cp:]))
                     c2_m = np.concatenate((m_m[j][k][:cp],s_m[i][cp:]))                                   
 
@@ -214,7 +211,7 @@ class se():
                         previous = x
                     matrix[previous+1][-1] = 1
                     map_backbone = matrix[np.triu_indices_from(matrix,k=1)]
-                    combined_m_1 = map_backbone + c1_m
+                    combined_m_1 = map_backbone*2 + c1_m
                     c1_map = map_backbone
                     
                     matrix = np.zeros([self.max_nodes + 2, self.max_nodes + 2])
@@ -229,28 +226,28 @@ class se():
                         previous = x
                     matrix[previous+1][-1] = 1
                     map_backbone = matrix[np.triu_indices_from(matrix,k=1)]
-                    combined_m_2 = map_backbone + c2_m
+                    combined_m_2 = map_backbone*2 + c2_m
                     c2_map = map_backbone
                     
                     #check whether the edges of c1 and c2 exceeds the upper bound 9. If so, randomly delete some edges.
                     c1_zeros = np.count_nonzero(combined_m_1 == 0)
                     c2_zeros = np.count_nonzero(combined_m_2 == 0)
                     if c1_zeros<12:
-                        del_ones_index_1 = random.sample(list(*np.where(c1_map!=1 and c1_m == 1)),k=12-c1_zeros)
+                        del_ones_index_1 = random.sample(list(*np.where(combined_m_1==1)),k=12-c1_zeros)
                         for x in del_ones_index_1:
                             c1_m[x] = 0
                     
                     if c2_zeros<12:
-                        del_ones_index_2 = random.sample(list(*np.where(c2_map!=1 and c2_m == 1)),k=12-c2_zeros)
+                        del_ones_index_2 = random.sample(list(*np.where(combined_m_2==1)),k=12-c2_zeros)
                         for x in del_ones_index_2:
                             c2_m[x] = 0
                             
-                    for i in range(len(c1_m)):
-                        if(c1_map[i] != 0):
-                            c1_m[i] = 1
+                    for t in range(len(c1_m)):
+                        if(c1_map[t] != 0):
+                            c1_m[t] = 1
                         
-                        if(c2_map[i] != 0):
-                            c2_m[i] = 1
+                        if(c2_map[t] != 0):
+                            c2_m[t] = 1
                     
                     cp = random.randint(self.nfix,self.max_nodes-2)
                     c1_v = np.concatenate((s_v[i][:self.nfix],s_v[i][self.nfix:cp], m_v[j][k][cp:]))
@@ -325,8 +322,9 @@ class se():
                 m_backbone[sreg][marg] = s_backbone[i]
                 m_m[sreg][marg] = s_m[i]
                 m_v[sreg][marg] = s_v[i]
-            if scorenew > self.ff((self.rb_backbone, self.rb_m, self.rb_v)):
-                self.rb_backbone, self.rb_m, self.rb_v = s_backbone[i],s_m[i],s_v[i]
+            key=self.get_key(s_v[i])
+            if scorenew > self.ff((self.rb_backbone[key], self.rb_m[key], self.rb_v[key])):
+                self.rb_backbone[key], self.rb_m[key], self.rb_v[key] = s_backbone[i],s_m[i],s_v[i]
             
         return m_backbone,m_m,m_v
     

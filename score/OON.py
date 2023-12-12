@@ -1,9 +1,14 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import numpy as np
 import torch
 import copy
+import counter
 
-from nasbench import api
-from Model import Network
+from score.nasbench import api
+from score.Model import Network
 
 INPUT = 'input'
 OUTPUT = 'output'
@@ -29,14 +34,24 @@ def CodeToSpec(code):
         for j in range(i+1,7):
             matrix[i][j]=l2[cnt]
             cnt+=1
+    previous=-1
+    for i,v in enumerate(l3):
+        if v==0:
+            continue
+        if previous==-1:
+            matrix[0][i+1] = 1
+        else:
+            matrix[previous+1][i+1] = 1
+        previous = i
+    matrix[previous+1][-1] = 1
     opts=[]
     opts.append(INPUT)
     for i in range(0,5):
-        if l1[i] == 1:
+        if l1[i] == 0:
             opts.append(CONV1X1)
-        elif l1[i] == 2:
+        elif l1[i] == 1:
             opts.append(CONV3X3)
-        elif l1[i] == 3:
+        elif l1[i] == 2:
             opts.append(MAXPOOL3X3)
     opts.append(OUTPUT)
     spec=api.ModelSpec(matrix=matrix,ops=opts)
@@ -51,15 +66,16 @@ def cal_score(ori, noi, rn, n_conv, channel):
     for i in range(len(ori)):
         error = ori[i] - noi[i]
         errs.append(np.sum(np.square(error))/error.size)
-    epsilon=1e-10
+    epsilon=1
     theta = 0
     eta = np.log(epsilon+np.sum(errs))
     gamma = channel
-    rho = n_conv/rn
+    rho = (n_conv+1)/(rn+1)
     if eta>theta:
         Psi = np.log((gamma*rho)/eta)
     else:
         Psi = 0
+    counter.EVALS+=1
     return Psi
 
 K = []
@@ -117,7 +133,7 @@ def NetToScore(network, x):
         if 'Conv' in str(type(module)):
             module.register_forward_hook(counting_forward_hook_conv)
             module.register_backward_hook(counting_backward_hook_conv)
-            module.visited_backwards_conv=False
+            module.visited_backwards_conv = False
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     x_origin = torch.clone(x)
     x_origin = x_origin.to(device)
@@ -125,6 +141,10 @@ def NetToScore(network, x):
     x_noise = x_noise.to(device)
     noise = (x.new(x.size()).normal_(0,0.05)).to(device)
     x_noise = x_noise + noise
+    K = []
+    rn = 0
+    n_conv=0
+    channel = 0
     network1.zero_grad()
     x_origin.requires_grad_(True)
     y = network1(x_origin, get_ints=False)
@@ -136,6 +156,7 @@ def NetToScore(network, x):
     n_conv=0
     channel = 0
     network2.zero_grad()
+    x_noise.to(device)
     x_noise.requires_grad_(True)
     y = network2(x_noise, get_ints=False)
     y.backward(torch.ones_like(y))

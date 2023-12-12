@@ -32,5 +32,4 @@ class rs():
             progress.set_description("Eval={};Score:{:.2f}".format(i,scores[i]))
         midx = np.argmax(scores)
         return codeslist[midx],scores[midx]
-            
-
+          

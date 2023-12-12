@@ -197,7 +197,7 @@ def Truncate(inputs, channels):
         return inputs 
     else:
         assert input_channels - channels == 1
-        return inputs[:, :channels, :, :]
+        return inputs[:, :int(channels), :, :]
     
 # 计算每个点的通道数
 def ComputeVertexChannels(in_channels, out_channels, matrix):

@@ -1,2 +1,6 @@
 dataset/
 score/cifar-10/
+
+searchspace/NAS-Bench-201-v1_1-096897.pth
+searchspace/nasbench_only108.tfrecord
+searchspace/NATS-sss-v1_0-50262-simple

@@ -1,0 +1,35 @@
+nohup: ignoring input
+2023-12-07 15:55:59.957639: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING:tensorflow:From /home/qinyuzhou/master/TNASSE_reproduce/searchspace/nasbench/api.py:148: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+/home/qinyuzhou/miniconda3/envs/tnasse/lib/python3.7/site-packages/torch/cuda/__init__.py:125: UserWarning: 
+GeForce RTX 2080 Ti with CUDA capability sm_75 is not compatible with the current PyTorch installation.
+The current PyTorch install supports CUDA capabilities sm_37 sm_50 sm_60 sm_61 sm_70 compute_37.
+If you want to use the GeForce RTX 2080 Ti GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+  warnings.warn(incompatible_device_warn.format(device_name, capability, " ".join(arch_list), device_name))
+Files already downloaded and verified
+Files already downloaded and verified
+Loading api...
+Loading dataset from file... This may take a few minutes...
+Loaded dataset in 28 seconds
+Finished loading.
+Problem type: nasbench101
+Algorithm: se
+Number of evaluations for each run: 1000
+Sequence length: 21
+Base (choices): 3
+Number of searchers: 1
+Number of regions: 3
+Number of possible goods: 1
+Run   0: gbest = 17.163;acc = 92.94;valid = 93.24; run time = 631.12s;training time = 0.00; code = (array([1, 1, 1, 0, 1]), array([1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1]), array([0, 0, 0, 1, 1]))
+Average over 0 runs: gbest = 17.163;acc = 92.94;valid = 93.24; run time = 631.12s; training time = 0.00s
+Average gbest over 1 runs: 17.16293082087607
+Average run time over 1 runs: 631.12s
+Maximum gbest over 1 runs: 17.16293082087607
+Minimum gbest over 1 runs: 17.16293082087607
+Average acc over 1 runs: 92.94
+Average valid over 1 runs: 93.24
