@@ -59,12 +59,7 @@ from searchspace import searchspace
 import datasets.data as data
 from datasets.perturbation_data.perturbation_data import *
 
-if args.ptype=='nasbench101':
-    from searchspace.nas_101_encoding import BACKBONE as ENCODING
-elif args.ptype=='nasbench201':
-    from searchspace.nas_201_encoding import BACKBONE as ENCODING
-elif args.ptype=='natsbenchsss':
-    from searchspace.nats_sss_encoding import ENCODING
+from searchspace.nas_101_encoding import BACKBONE as ENCODING
 encoding = ENCODING() 
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -84,34 +79,17 @@ else:
     raise("No such algo!")
 
     
-if args.ptype=='nasbench201':
-    get_acc = lambda id:ss.get_acc_by_code(encoding.parse_code(id),args)
-    get_acc_all = lambda id:ss.get_acc_by_code_all(encoding.parse_code(id),args)
-    get_acc_proxy = lambda id:ss.get_acc_by_code(encoding.parse_code(id),args,hp=args.hp)
-    get_time_proxy = lambda id:ss.get_training_time_by_code(encoding.parse_code(id),args,hp=args.hp)
-    get_net = lambda id:ss.get_net_by_code(encoding.parse_code(id),args)
-elif args.ptype=='nasbench101':
-    get_acc = lambda id:ss.get_acc_by_code_backbone(encoding.parse_code(*id),args)
-    get_acc_proxy = lambda id:ss.get_acc_by_code_backbone(encoding.parse_code(*id),args,hp=args.hp)
-    get_time_proxy = lambda id:ss.get_training_time_by_code_backbone(encoding.parse_code(*id),args,hp=args.hp)
-    get_net = lambda id:ss.get_net_by_code_backbone(encoding.parse_code(*id),args)
-elif args.ptype=='natsbenchsss':
-    get_acc = lambda id:ss.get_acc(encoding.parse_code(id),args)
-    get_acc_all = lambda id:ss.get_acc_all(encoding.parse_code(id),args)
-    get_acc_proxy = lambda id:ss.get_acc(encoding.parse_code(id),args,hp=args.hp)
-    get_time_proxy = lambda id:ss.get_training_time(encoding.parse_code(id),args,hp=args.hp)
-    get_net = lambda id:ss.get_net(encoding.parse_code(id),args)
+get_acc = lambda id:ss.get_acc_by_code_backbone(encoding.parse_code(*id),args)
+get_acc_proxy = lambda id:ss.get_acc_by_code_backbone(encoding.parse_code(*id),args,hp=args.hp)
+get_time_proxy = lambda id:ss.get_training_time_by_code_backbone(encoding.parse_code(*id),args,hp=args.hp)
+get_net = lambda id:ss.get_net_by_code_backbone(encoding.parse_code(*id),args)
 
 
 
-if args.ptype=='nasbench101':
-    par['max_nodes'] = args.max_nodes
+par['max_nodes'] = args.max_nodes
 
 if args.dataset == 'cifar10':
     args.acc_type = 'ori-test'
-    val_acc_type = 'x-valid'
-else:
-    args.acc_type = 'x-test'
     val_acc_type = 'x-valid'
 
 hist_code = []
@@ -127,7 +105,6 @@ hist_valid_cifar100 = []
 hist_acc_imagenet = []
 hist_valid_imagenet = []
 
-print("Problem type: {}".format(args.ptype))
 print("Algorithm: {}".format(args.algo))
 print("Number of evaluations for each run: {}".format(args.max_evaluations))
 print("Sequence length: {}".format(args.sl))
@@ -145,9 +122,9 @@ for r in range(args.runs):
     start = time.time()
     g = GaussianNoise(train_loader,device,sigma=args.sigma)
     data, target, noise = g.get_noise_data()
-    ff = lambda code:score(code,get_net,train_loader,device,args,data,target,noise)
-    # score_init()
-    # ff = lambda code:get_score(code)
+    # ff = lambda code:score(code,get_net,train_loader,device,args,data,target,noise)
+    score_init()
+    ff = lambda code:get_score(code)
 
     # avoid repeatedly scoring same networks
     dictionary = {}

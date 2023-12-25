@@ -29,13 +29,13 @@ def CodeToSpec(code):
     if len(l3) != 5:
         raise ValueError('len(l3) must be 5')
     cnt=0
-    matrix=np.zeros((7,7))
+    matrix=np.zeros((7,7),dtype=int)
     for i in range(0,7):
         for j in range(i+1,7):
             matrix[i][j]=l2[cnt]
             cnt+=1
     previous=-1
-    for i,v in enumerate(l3):
+    for i,v in enumerate(l1):
         if v==0:
             continue
         if previous==-1:
@@ -47,11 +47,11 @@ def CodeToSpec(code):
     opts=[]
     opts.append(INPUT)
     for i in range(0,5):
-        if l1[i] == 0:
+        if l3[i] == 0:
             opts.append(CONV1X1)
-        elif l1[i] == 1:
+        elif l3[i] == 1:
             opts.append(CONV3X3)
-        elif l1[i] == 2:
+        elif l3[i] == 2:
             opts.append(MAXPOOL3X3)
     opts.append(OUTPUT)
     spec=api.ModelSpec(matrix=matrix,ops=opts)
@@ -76,7 +76,7 @@ def cal_score(ori, noi, rn, n_conv, channel):
     else:
         Psi = 0
     counter.EVALS+=1
-    return Psi
+    return Psi, eta, gamma, rho
 
 K = []
 rn = 0
@@ -162,5 +162,6 @@ def NetToScore(network, x):
     y.backward(torch.ones_like(y))
     y = network2(x_noise, get_ints=False)
     KKK=copy.deepcopy(K)
-    return cal_score(KK,KKK,rn,n_conv,channel)
+    Psi, eta, gamma, rho = cal_score(KK,KKK,rn,n_conv,channel)
+    return Psi, eta, gamma, rho
             
