@@ -5,7 +5,6 @@ from __future__ import print_function
 import numpy as np
 import torch
 import copy
-import counter
 
 from score.nasbench import api
 from score.Model import Network
@@ -75,7 +74,7 @@ def cal_score(ori, noi, rn, n_conv, channel):
         Psi = np.log((gamma*rho)/eta)
     else:
         Psi = 0
-    counter.EVALS+=1
+    # counter.EVALS+=1
     return Psi, eta, gamma, rho
 
 K = []

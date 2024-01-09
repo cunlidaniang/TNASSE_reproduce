@@ -16,6 +16,7 @@ def score_init():
     path=os.path.abspath(__file__)
     path=os.path.dirname(path)
     path=os.path.dirname(path)
+    print(path)
     nasbench=api.NASBench(path+'/dataset/nasbench_only108.tfrecord')
 
 def get_score(code):
